@@ -76,3 +76,4 @@ Option B — You run authenticated CLI commands on your machine and I guide you 
 If you'd like me to just prepare everything but not push or configure Vercel, I already did most prep: `.gitignore`, `.env.example`, `postinstall` in `package.json`, and switched the admin password to `WAITLIST_ADMIN_PASSWORD` env var.
 
 Tell me which option you want and provide the values you consent to share, and I'll proceed with the automated steps.
+# Unisage
