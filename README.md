@@ -40,18 +40,19 @@ git push -u origin main
 ```
 
 2. Provision a production database and obtain `DATABASE_URL`.
-	- Recommended: Vercel Postgres, Supabase, Neon, or PlanetScale.
-	- Do NOT use `file:./prisma/dev.db` in production.
+   - Recommended: Vercel Postgres, Supabase, Neon, or PlanetScale.
+   - Do NOT use `file:./prisma/dev.db` in production.
 
 3. In Vercel project settings (after you import the GitHub repo), set environment variables:
-	- `DATABASE_URL` = your production DB connection string
-	- `WAITLIST_ADMIN_PASSWORD` = strong admin password
+   - `DATABASE_URL` = your production DB connection string
+   - `WAITLIST_ADMIN_PASSWORD` = strong admin password
 
 4. Connect GitHub repo to Vercel and deploy. Vercel will run `npm install` and `prisma generate` (postinstall).
 
 ## What I can do for you (if you provide access)
 
 I can fully automate the following:
+
 - Create a GitHub repository and push this workspace.
 - Create a Vercel project and connect it to the repo.
 - Set Vercel environment variables (`DATABASE_URL`, `WAITLIST_ADMIN_PASSWORD`).
@@ -60,11 +61,13 @@ I can fully automate the following:
 To perform those actions on your behalf I need one of the following options (pick one):
 
 Option A — Provide tokens (fastest, I can do everything remotely):
+
 - GitHub personal access token with `repo` scope (or `public_repo` for public repos).
 - Vercel token with project creation permissions.
 - Choice of database provider OR an existing DB connection string.
 
 Option B — You run authenticated CLI commands on your machine and I guide you (safer):
+
 - I provide a sequence of `gh`/`vercel` commands to run locally. I will prepare the repo and files; you run `gh repo create` and `vercel` commands so credentials remain on your machine.
 
 ## What I need from you now to proceed automatically

@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 
-import { prisma } from "@/lib/prisma";
+import { Pool } from 'pg';
+
+const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 
 export const runtime = "nodejs";
 
@@ -32,28 +34,19 @@ export async function POST(request: Request) {
     );
   }
 
-  const entry = await prisma.waitlistEntry.create({
-    data: {
-      name,
-      email,
-    },
-  });
+  const res = await pool.query(
+    'INSERT INTO "WaitlistEntry" (name, email) VALUES ($1, $2) RETURNING id',
+    [name, email]
+  );
 
-  return NextResponse.json({ ok: true, id: entry.id });
+  const id = res.rows[0]?.id;
+  return NextResponse.json({ ok: true, id });
 }
 
 export async function GET() {
-  const entries = await prisma.waitlistEntry.findMany({
-    orderBy: { createdAt: "desc" },
-    take: 200,
-  });
-
-  return NextResponse.json(
-    entries.map((e) => ({
-      id: e.id,
-      name: e.name,
-      email: e.email,
-      createdAt: e.createdAt,
-    }))
+  const result = await pool.query(
+    'SELECT id, name, email, "createdAt" FROM "WaitlistEntry" ORDER BY "createdAt" DESC LIMIT 200'
   );
+
+  return NextResponse.json(result.rows);
 }

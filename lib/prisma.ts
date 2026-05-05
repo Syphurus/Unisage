@@ -8,7 +8,11 @@ const databaseUrl = process.env.DATABASE_URL;
 
 let prisma: PrismaClient;
 
-if (!databaseUrl || databaseUrl.startsWith("file:") || databaseUrl.endsWith(".db")) {
+if (
+  !databaseUrl ||
+  databaseUrl.startsWith("file:") ||
+  databaseUrl.endsWith(".db")
+) {
   // Local SQLite adapter path
   // Lazy-import adapter & better-sqlite3 to avoid requiring them in production.
   // Lazy-require runtime-only native deps. Use CommonJS require to avoid ESM interop issues.
@@ -37,7 +41,8 @@ if (!databaseUrl || databaseUrl.startsWith("file:") || databaseUrl.endsWith(".db
     globalForPrisma.prisma ??
     new PrismaClient({
       adapter,
-      log: process.env.NODE_ENV === "development" ? ["warn", "error"] : ["error"],
+      log:
+        process.env.NODE_ENV === "development" ? ["warn", "error"] : ["error"],
     });
 
   if (process.env.NODE_ENV !== "production") {
@@ -49,7 +54,10 @@ if (!databaseUrl || databaseUrl.startsWith("file:") || databaseUrl.endsWith(".db
 
   prisma =
     globalForPrisma.prisma ??
-    new PrismaClient({ log: process.env.NODE_ENV === "development" ? ["warn", "error"] : ["error"] });
+    new PrismaClient({
+      log:
+        process.env.NODE_ENV === "development" ? ["warn", "error"] : ["error"],
+    });
 
   if (process.env.NODE_ENV !== "production") {
     globalForPrisma.prisma = prisma;

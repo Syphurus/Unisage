@@ -2,7 +2,7 @@
 module.exports = {
   datasources: {
     db: {
-      provider: 'postgresql',
+      provider: "postgresql",
       url: process.env.DATABASE_URL,
     },
   },
