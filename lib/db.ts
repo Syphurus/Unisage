@@ -9,8 +9,17 @@ type WaitlistEntryRow = {
 };
 
 const databaseUrl = process.env.DATABASE_URL ?? "";
+const isProduction = process.env.NODE_ENV === "production";
 const usesSqlite =
-  !databaseUrl || databaseUrl.startsWith("file:") || databaseUrl.endsWith(".db");
+  !databaseUrl ||
+  databaseUrl.startsWith("file:") ||
+  databaseUrl.endsWith(".db");
+
+if (isProduction && usesSqlite) {
+  throw new Error(
+    "DATABASE_URL is missing or is pointing to local SQLite. Set DATABASE_URL to your Supabase Postgres connection string in Vercel."
+  );
+}
 
 let sqliteDb: ReturnType<typeof createSqliteDb> | null = null;
 let pgPool: Pool | null = null;
@@ -54,7 +63,7 @@ export async function insertWaitlistEntry(name: string, email: string) {
   if (usesSqlite) {
     const db = getSqliteDb();
     const result = db
-      .prepare('INSERT INTO WaitlistEntry (name, email) VALUES (?, ?)')
+      .prepare("INSERT INTO WaitlistEntry (name, email) VALUES (?, ?)")
       .run(name, email);
 
     return { id: Number(result.lastInsertRowid) };
@@ -74,7 +83,7 @@ export async function listWaitlistEntries(): Promise<WaitlistEntryRow[]> {
     const db = getSqliteDb();
     return db
       .prepare(
-        'SELECT id, name, email, createdAt FROM WaitlistEntry ORDER BY createdAt DESC LIMIT 200'
+        "SELECT id, name, email, createdAt FROM WaitlistEntry ORDER BY createdAt DESC LIMIT 200"
       )
       .all() as WaitlistEntryRow[];
   }
