@@ -24,10 +24,12 @@ Before deploying, set these environment variables in Vercel:
 
    | Name                      | Value                           | Example                                                             |
    | ------------------------- | ------------------------------- | ------------------------------------------------------------------- |
-   | `DATABASE_URL`            | Your Supabase connection string | `postgresql://postgres:PASSWORD@db.XXXXX.supabase.co:5432/postgres` |
+   | `DATABASE_URL`            | Your Supabase session pooler connection string | `postgresql://postgres.XXXXX:PASSWORD@aws-1-ap-southeast-2.pooler.supabase.com:5432/postgres` |
    | `WAITLIST_ADMIN_PASSWORD` | A strong admin password         | `YourSecurePassword123!`                                            |
 
 3. Click **"Save"** for each variable
+
+For Vercel, use the **Session pooler** connection string from Supabase, not the direct connection string. The session pooler is IPv4 proxied and works on Vercel.
 
 ## Step 3: Deploy
 
@@ -45,8 +47,8 @@ Before deploying, set these environment variables in Vercel:
 
 ### "getaddrinfo ENOTFOUND db.dqvtfhavvcjvglzqetyz.supabase.co"
 
-- `DATABASE_URL` is not set or missing in Vercel
-- **Fix:** Go to Vercel project Settings → Environment Variables and add `DATABASE_URL`
+- `DATABASE_URL` is pointing at the direct Supabase host instead of the session pooler host
+- **Fix:** Go to Supabase → Connection string → select **Session pooler**, then update `DATABASE_URL` in Vercel
 
 ### "Unable to save your waitlist entry"
 
@@ -62,9 +64,10 @@ Before deploying, set these environment variables in Vercel:
 
 1. Go to your Supabase project: `https://app.supabase.com`
 2. Click **Settings** → **Database**
-3. Under **Connection string**, copy the **URI** (PostgreSQL section)
-4. Replace `[YOUR-PASSWORD]` with your database password
-5. Use this as your Vercel `DATABASE_URL`
+3. Under **Connection string**, choose **Session pooler**
+4. Copy the **URI** shown there
+5. Replace `[YOUR-PASSWORD]` with your database password
+6. Use this as your Vercel `DATABASE_URL`
 
 ## Environment Variables Reference
 
