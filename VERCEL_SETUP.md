@@ -22,10 +22,10 @@ Before deploying, set these environment variables in Vercel:
 1. In your project dashboard, go to **Settings** → **Environment Variables**
 2. Add the following (for **Production** and **Preview** environments):
 
-   | Name | Value | Example |
-   |------|-------|---------|
-   | `DATABASE_URL` | Your Supabase connection string | `postgresql://postgres:PASSWORD@db.XXXXX.supabase.co:5432/postgres` |
-   | `WAITLIST_ADMIN_PASSWORD` | A strong admin password | `YourSecurePassword123!` |
+   | Name                      | Value                           | Example                                                             |
+   | ------------------------- | ------------------------------- | ------------------------------------------------------------------- |
+   | `DATABASE_URL`            | Your Supabase connection string | `postgresql://postgres:PASSWORD@db.XXXXX.supabase.co:5432/postgres` |
+   | `WAITLIST_ADMIN_PASSWORD` | A strong admin password         | `YourSecurePassword123!`                                            |
 
 3. Click **"Save"** for each variable
 
@@ -44,14 +44,17 @@ Before deploying, set these environment variables in Vercel:
 ## Troubleshooting
 
 ### "getaddrinfo ENOTFOUND db.dqvtfhavvcjvglzqetyz.supabase.co"
+
 - `DATABASE_URL` is not set or missing in Vercel
 - **Fix:** Go to Vercel project Settings → Environment Variables and add `DATABASE_URL`
 
 ### "Unable to save your waitlist entry"
+
 - Check `/api/health` to see the exact error
 - Verify `DATABASE_URL` is correct (copy it from Supabase dashboard)
 
 ### "Invalid password" on `/waitlist`
+
 - The password you're entering doesn't match `WAITLIST_ADMIN_PASSWORD` set in Vercel
 - **Fix:** Reset `WAITLIST_ADMIN_PASSWORD` in Vercel and try again
 

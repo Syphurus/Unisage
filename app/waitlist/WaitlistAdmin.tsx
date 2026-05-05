@@ -31,8 +31,15 @@ export default function WaitlistAdmin() {
       }
 
       const res = await fetch(`/api/waitlist`);
-      const data = (await res.json()) as Entry[];
-      setEntries(data);
+      const data = await res.json();
+
+      if (!res.ok || !Array.isArray(data)) {
+        setError(data?.error ?? "Failed to load entries");
+        setLoading(false);
+        return;
+      }
+
+      setEntries(data as Entry[]);
     } catch (err) {
       setError("Network error");
     } finally {
