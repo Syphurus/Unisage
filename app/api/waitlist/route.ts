@@ -1,8 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { Pool } from "pg";
-
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+import { insertWaitlistEntry, listWaitlistEntries } from "@/lib/db";
 
 export const runtime = "nodejs";
 
@@ -34,19 +32,11 @@ export async function POST(request: Request) {
     );
   }
 
-  const res = await pool.query(
-    'INSERT INTO "WaitlistEntry" (name, email) VALUES ($1, $2) RETURNING id',
-    [name, email]
-  );
-
-  const id = res.rows[0]?.id;
+  const { id } = await insertWaitlistEntry(name, email);
   return NextResponse.json({ ok: true, id });
 }
 
 export async function GET() {
-  const result = await pool.query(
-    'SELECT id, name, email, "createdAt" FROM "WaitlistEntry" ORDER BY "createdAt" DESC LIMIT 200'
-  );
-
-  return NextResponse.json(result.rows);
+  const entries = await listWaitlistEntries();
+  return NextResponse.json(entries);
 }
