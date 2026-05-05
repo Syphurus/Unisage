@@ -76,4 +76,35 @@ Option B — You run authenticated CLI commands on your machine and I guide you 
 If you'd like me to just prepare everything but not push or configure Vercel, I already did most prep: `.gitignore`, `.env.example`, `postinstall` in `package.json`, and switched the admin password to `WAITLIST_ADMIN_PASSWORD` env var.
 
 Tell me which option you want and provide the values you consent to share, and I'll proceed with the automated steps.
-# Unisage
+
+## Using Supabase for the production database (recommended)
+
+This project uses Prisma and is now configured for PostgreSQL. Supabase is a managed Postgres provider that works well with Prisma and Vercel.
+
+Quick Supabase setup
+
+1. Create a Supabase project at https://app.supabase.com/.
+2. In the Supabase dashboard go to Settings → Database → Connection string and copy the `Connection string (URI)`.
+3. In your development environment set `DATABASE_URL` to that connection string and run migrations locally:
+
+```bash
+export DATABASE_URL="postgresql://<user>:<password>@<host>:5432/<db>"
+npx prisma migrate dev --name init
+npx prisma generate
+```
+
+4. Commit the generated migration files under `prisma/migrations` and push to GitHub.
+
+Deploying and running migrations
+
+- Add the Supabase connection string as `DATABASE_URL` in Vercel (Production & Preview).
+- Add the same connection string as `PROD_DATABASE_URL` in GitHub repository Secrets if you use the included GitHub Actions workflow to run migrations on push to `main`.
+- When deploying, run `npx prisma migrate deploy` (the included GitHub Action will run this) so your production DB schema is up to date.
+
+Notes and local development
+
+- The Prisma schema has been updated to use `provider = "postgresql"` and `url = env("DATABASE_URL")` in `prisma/schema.prisma`.
+- For local development you can run a local Postgres (Docker) or use a Supabase project dev DB. Using local SQLite is possible but requires switching the Prisma schema back to `sqlite`.
+- Do not commit `.env` — use `.env.example` as a template.
+
+If you want me to provision Supabase and create the initial migration for you, provide Supabase access or tell me to prepare the migration steps and I'll guide you through running them locally.
