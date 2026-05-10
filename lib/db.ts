@@ -83,14 +83,14 @@ export async function listWaitlistEntries(): Promise<WaitlistEntryRow[]> {
     const db = getSqliteDb();
     return db
       .prepare(
-        "SELECT id, name, email, createdAt FROM WaitlistEntry ORDER BY createdAt DESC LIMIT 200"
+        "SELECT id, name, email, createdAt FROM WaitlistEntry ORDER BY createdAt DESC"
       )
       .all() as WaitlistEntryRow[];
   }
 
   const pool = getPgPool();
   const result = await pool.query(
-    'SELECT id, name, email, "createdAt" AS "createdAt" FROM "WaitlistEntry" ORDER BY "createdAt" DESC LIMIT 200'
+    'SELECT id, name, email, "createdAt" AS "createdAt" FROM "WaitlistEntry" ORDER BY "createdAt" DESC'
   );
 
   return result.rows as WaitlistEntryRow[];
