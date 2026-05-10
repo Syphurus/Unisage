@@ -47,12 +47,47 @@ export default function WaitlistAdmin() {
     }
   };
 
+  const handleExportToGoogleSheets = async () => {
+    try {
+      const response = await fetch("/api/waitlist/export");
+      if (!response.ok) throw new Error("Export failed");
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download =
+        `waitlist-${new Date().toISOString().split("T")[0]}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } catch (error) {
+      alert("Failed to export data");
+      console.error(error);
+    }
+  };
+
   if (entries) {
     return (
       <div style={{ padding: "2rem", maxWidth: 1000, margin: "0 auto" }}>
         <h1 style={{ marginBottom: "1rem" }}>Waitlist entries</h1>
         <WaitlistViewer initialEntries={entries} />
-        <div style={{ marginTop: 12 }}>
+        <div style={{ marginTop: 12, display: "flex", gap: "0.5rem" }}>
+          <button
+            onClick={handleExportToGoogleSheets}
+            style={{
+              padding: "0.6rem 1rem",
+              backgroundColor: "#4285F4",
+              color: "white",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+              fontWeight: 500,
+            }}
+          >
+            📊 Export to CSV (Google Sheets)
+          </button>
           <button
             onClick={() => {
               setEntries(null);

@@ -22,10 +22,10 @@ Before deploying, set these environment variables in Vercel:
 1. In your project dashboard, go to **Settings** → **Environment Variables**
 2. Add the following (for **Production** and **Preview** environments):
 
-   | Name                      | Value                           | Example                                                             |
-   | ------------------------- | ------------------------------- | ------------------------------------------------------------------- |
+   | Name                      | Value                                          | Example                                                                                       |
+   | ------------------------- | ---------------------------------------------- | --------------------------------------------------------------------------------------------- |
    | `DATABASE_URL`            | Your Supabase session pooler connection string | `postgresql://postgres.XXXXX:PASSWORD@aws-1-ap-southeast-2.pooler.supabase.com:5432/postgres` |
-   | `WAITLIST_ADMIN_PASSWORD` | A strong admin password         | `YourSecurePassword123!`                                            |
+   | `WAITLIST_ADMIN_PASSWORD` | A strong admin password                        | `YourSecurePassword123!`                                                                      |
 
 3. Click **"Save"** for each variable
 
